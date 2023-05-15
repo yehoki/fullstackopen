@@ -6,5 +6,5 @@ const Part = (props) => {
       {props.part} {props.ex}
     </div>
   );
-};
+}
 export default Part;

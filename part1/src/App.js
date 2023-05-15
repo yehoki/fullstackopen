@@ -23,17 +23,10 @@ function App() {
     <div>
       <Header course={course} />
       <Content
-        part1={parts[0].name}
-        part2={parts[1].name}
-        part3={parts[2].name}
-        ex1={parts[0].exercises}
-        ex2={parts[1].exercises}
-        ex3={parts[2].exercises}
+      parts = {parts}
       />
       <Total
-        ex1={parts[0].exercises}
-        ex2={parts[1].exercises}
-        ex3={parts[2].exercises}
+      parts = {parts}
       />
     </div>
   );
