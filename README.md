@@ -117,8 +117,58 @@ const sum = (p1, p2) => {
     return p1 + p2;
 }
 ```
+
 Throughout the course, majority of the functions will be defined using the arrow syntax.
 
+#### Object methods, "this" and Classes
+
+We will soon be introduced to React Hooks, which will replace the need for defining objects with methods, however it will still be worth covering it.
+When we create an object, we can either define a property for it to store a value, or a method to do an action, or run a function.
+We can then call that method on the object in order to specifically use that function with the data inside the object, as an example:
+
+```JS
+const arto = {
+  name: 'Arto Hellas',
+  age: 35,
+  education: 'PhD',
+  greet: function() {
+    console.log('hello, my name is ' + this.name)
+  },
+}
+
+arto.greet();
+```
+In our case here, we use `this` to reference the object, however this differs when we use arrow function and normal function definitions.
+
+Although JS is not an object-orientated programming language, with ES6 came the introduction of classes to JavaScript.
+Defining classes is quite intuitive, and they behave similary to objects in some ways - but we can use a class in order to extend it to multiple objects.
+So classes, are a bit like React Components, where we can reuse them with our data.
+
+### Component state, event handlers
+
+#### Component helper functions and destructuring
+
+We can create logic within our components before we return the HTML & JS mix, and then use it to alternate our data and output.
+
+Destructuring is a JavaScript expression using which we can unpack multiple values from an array or an object into separate variables.
+It will come greatly useful when related to React props as we can destructure the general props object into separately stored variables.
+Here is an example [from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment):
+```JS
+let a, b, rest;
+[a, b] = [10, 20];
+
+console.log(a);
+// Expected output: 10
+
+console.log(b);
+// Expected output: 20
+
+[a, b, ...rest] = [10, 20, 30, 40, 50];
+
+console.log(rest);
+// Expected output: Array [30, 40, 50]
+
+```
 
 ## Part 2: Communicating with the server
 
