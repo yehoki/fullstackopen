@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Score = ({ text, score }) => {
+export const StatisticLine = ({ text, score }) => {
   return (
     <div>
       {text} {score}

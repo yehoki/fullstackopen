@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Header } from "./components/Header";
 import { Buttons } from "./components/Buttons";
-import { Content } from "./components/Content";
+import { Statistics } from "./components/Statistics";
 
 const App = () => {
   const [good, setGood] = useState(0);
@@ -29,7 +29,7 @@ const App = () => {
         setBad={handleBadClick}
       />
       <Header text="Statistics" />
-      <Content good={good} bad={bad} neutral={neutral} />
+      <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   );
 };
