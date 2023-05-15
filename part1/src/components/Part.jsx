@@ -1,10 +1,10 @@
 import React from "react";
 
-function Part(props) {
+const Part = (props) => {
   return (
     <div>
       {props.part} {props.ex}
     </div>
   );
-}
+};
 export default Part;

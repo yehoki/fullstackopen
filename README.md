@@ -53,6 +53,7 @@ function Example({propOne, propTwo}) {
 ```
 
 Another way we can read components is simply by defining the input as an object, from which we can read all the possible properties it contains by destructuring:
+
 ```JS
 const Example = (props) => {
     return (
@@ -63,12 +64,15 @@ const Example = (props) => {
     )
 }
 ```
+
 Another way to destructure the variables would be like so:
+
 ```JS
 const Example = (props) => {
     const [propsOne, propsTwo] = props;
 }
 ```
+
 Note how yet again we are using curly brackets to reference the variables - this is key in JSX as it separates markup text from any variables we might want to pass on.
 
 #### Some quick notes and remarks
@@ -78,11 +82,42 @@ A good practice, as with all other coding and programming, is making sure we hav
 
 Another thing to note when using React components - their names MUST be capitalized, as it will possibly confused the React component with a HTML tag.
 
-Also, every React component should have a root element, i.e. a parent element -  an easy way of doing this is storing the entire component as a `div`, or a empty tag `<></>`, i.e. creating fragments which will prevent our DOM tree to be flooded with extra `div` elements.
+Also, every React component should have a root element, i.e. a parent element - an easy way of doing this is storing the entire component as a `div`, or a empty tag `<></>`, i.e. creating fragments which will prevent our DOM tree to be flooded with extra `div` elements.
 
 One final remark before we move on - Do Not Render Objects in components. The data passed on into a component should be primitive values - strings, numbers etc, as well as arrays but only those containing those allowed primitive values inside it.
 
+### JavaScript
 
+Since React is a JavaScript library, it will be useful to quickly recap and go over some important features of JS that we will be using with React
+
+#### Variables
+
+We can assign variables in JS using three different ways:
+
+- `const` which assigns a constant value, and its valued cannot be changed - immutable
+- `let` defines a block scoped variable, i.e. within the same block as we are currently working in
+- `var` defines a function scoped variable which value we can change, or when declared outside of a function it is global.
+
+#### Arrays
+
+Arrays are used to store different types of data in a list, which within JS have many useful methods.
+`forEach`, `map`, `reduce` and `filter` are some of the most commonly used ones, and their use will be extremely helpful when using React.
+
+#### Objects
+
+We previously saw that we MUST NOT use objects as props, as this in turn will error, however we can use the individual values of an object.
+Objects will be really useful for us when storing any large chunks of data, as it allows us to store specific information which we can call.
+
+#### Functions
+
+We can define a function in many different ways, most commonly the arrow functions:
+
+```JS
+const sum = (p1, p2) => {
+    return p1 + p2;
+}
+```
+Throughout the course, majority of the functions will be defined using the arrow syntax.
 
 
 ## Part 2: Communicating with the server

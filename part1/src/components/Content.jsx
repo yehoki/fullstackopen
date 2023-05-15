@@ -1,7 +1,7 @@
 import React from "react";
 import Part from "./Part";
 
-function Content(props) {
+const Content = (props) => {
   return (
     <div>
       <Part part={props.part1} ex={props.ex1} />
@@ -9,6 +9,6 @@ function Content(props) {
       <Part part={props.part3} ex={props.ex3} />
     </div>
   );
-}
+};
 
 export default Content;
