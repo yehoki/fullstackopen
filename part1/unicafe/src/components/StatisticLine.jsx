@@ -2,8 +2,9 @@ import React from "react";
 
 export const StatisticLine = ({ text, score }) => {
   return (
-    <div>
-      {text} {score}
-    </div>
+    <tr>
+      <td>{text}</td>
+      <td>{score}</td>
+    </tr>
   );
 };
