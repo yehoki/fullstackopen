@@ -6,7 +6,7 @@ const Content = (props) => {
     return <Part
     part = {variable.name}
     ex = {variable.exercises}
-    key = {variable.name} />
+    key = {variable.id} />
   });
   return <div>{parts}</div>;
 };
