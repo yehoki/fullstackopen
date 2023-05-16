@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Button } from "./components/Button";
 import { Anecdote } from "./components/Anecdote";
 const App = () => {
+  const [selected, setSelected] = useState(0);
+  const [points, setPoints] = useState(new Uint8Array(8));
   const anecdotes = [
     "If it hurts, do it more often.",
     "Adding manpower to a late software project makes it later!",
@@ -14,16 +16,30 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
-  const [selected, setSelected] = useState(0);
   const handleNextAnecdote = () => {
     setSelected((selected + 1) % anecdotes.length);
   };
+
+  const handleAddVote = () => {
+    const copy = [...points];
+    copy[selected] += 1;
+    setPoints(copy);
+  };
+
+  const getMostVoted = () => {
+    const index = points.indexOf(Math.max(...points));
+    return index;
+  }
   return (
     <div>
-      <Anecdote anecdote={anecdotes[selected]} />
+      <h2>Anecdote of the day</h2>
+      <Anecdote anecdote={anecdotes[selected]} votes={points[selected]} />
       <div>
+        <Button text="Vote" onClick={handleAddVote} />
         <Button text="Next anecdote" onClick={handleNextAnecdote} />
       </div>
+      <h2>Anecdote with most votes</h2>
+      <Anecdote anecdote={anecdotes[getMostVoted()]} votes ={points[getMostVoted()]}/>
     </div>
   );
 };
