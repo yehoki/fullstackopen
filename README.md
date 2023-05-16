@@ -138,6 +138,7 @@ const arto = {
 
 arto.greet();
 ```
+
 In our case here, we use `this` to reference the object, however this differs when we use arrow function and normal function definitions.
 
 Although JS is not an object-orientated programming language, with ES6 came the introduction of classes to JavaScript.
@@ -153,6 +154,7 @@ We can create logic within our components before we return the HTML & JS mix, an
 Destructuring is a JavaScript expression using which we can unpack multiple values from an array or an object into separate variables.
 It will come greatly useful when related to React props as we can destructure the general props object into separately stored variables.
 Here is an example [from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment):
+
 ```JS
 let a, b, rest;
 [a, b] = [10, 20];
@@ -169,6 +171,37 @@ console.log(rest);
 // Expected output: Array [30, 40, 50]
 
 ```
+
+So, we can destructure our props in two different ways:
+
+```JS
+// First way
+const Example = (props) => {
+    const {propOne, propTwo} = props;
+};
+
+// Second way
+const AnotherExample = ({propOne, propTwo}) => {};
+```
+
+#### Stateful components and event handling
+
+We can now move onto the idea of `state` in React, and with that one of the first [React hook](https://react.dev/reference/react).
+Hooks are essentially different features we can use within React, and later on we will also be able to combine different hooks in hope to create our own ones.
+The State Hook's main purpose is to store or 'remember' information within a component.
+So, an example of this would be a form component using the state to store the input value of the form, either for an individual value or the entire form in JSON form.
+
+In order to use the State Hook we need to do two things:
+- Import the hook from React:
+```JS
+import { useState } from 'react';
+```
+- Initialize the hook in the following form:
+```JS
+const [state, setState] = useState(initialState);
+```
+Where `state` is the value reference to our state, `setState` allows us to change the value of our state and `initialState` is the beginning value at the time of rendering the app.
+
 
 ## Part 2: Communicating with the server
 
