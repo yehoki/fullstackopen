@@ -20,25 +20,69 @@ const App = () => {
   const addNewEntry = (event) => {
     event.preventDefault();
     if (checkDuplicateNames(newName)) {
-      const lastId = persons.length === 0 ? 1 : persons.slice(-1)[0].id;
+      const lastId = findFirstFreeId();
       const newPerson = {
         name: newName,
         number: newNumber,
-        id: lastId + 1,
+        id: lastId,
       };
       personManipulate.addPerson(newPerson).then((res) => {
         setUpdate(update + 1);
       });
     } else {
-      alert(`${newName} already exists!`);
+      const currentPerson = persons.filter(
+        (person) => person.name.toLowerCase() === newName.toLowerCase()
+      )[0];
+      if (
+        window.confirm(
+          `${currentPerson.name} is already added to the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const newPerson = {
+          name: currentPerson.name,
+          number: newNumber,
+          id: currentPerson.id,
+        };
+        personManipulate.editPerson(currentPerson.id, newPerson).then((res) => {
+          setUpdate(update + 1);
+        });
+      }
     }
   };
 
+  const findFirstFreeId = () => {
+    if (persons.length === 0) {
+      return 1;
+    }
+    let highest = 0;
+    persons.forEach((person) => {
+      if (person.id > highest) {
+        highest = person.id;
+      }
+    });
+    const findArr = [];
+    for (let i = 0; i < highest; i++) {
+      findArr.push(i + 1);
+    }
+    const personsIds = persons.map((person) => person.id);
+    const lowestIdAvail =
+      persons.length === findArr.length
+        ? highest + 1
+        : Math.min(findArr.filter((person) => !personsIds.includes(person)));
+    return lowestIdAvail;
+  };
+
   const deleteEntry = (event) => {
-    const personFound = persons.filter((person) => person.id.toString() === event.target.value)[0];
-    personManipulate.deletePerson(personFound.id).then((res) => {
-      setUpdate(update + 1);
-    })
+    const personFound = persons.filter(
+      (person) => person.id.toString() === event.target.value
+    )[0];
+    if (
+      window.confirm(`Are you sure you want to delete ${personFound.name}?`)
+    ) {
+      personManipulate.deletePerson(personFound.id).then((res) => {
+        setUpdate(update + 1);
+      });
+    }
   };
 
   const handleNameChange = (event) => {
@@ -69,7 +113,9 @@ const App = () => {
     return personList.map((person) => (
       <li key={person.id}>
         {person.name} {person.number}{" "}
-        <button onClick={deleteEntry} value={person.id}>delete</button>
+        <button onClick={deleteEntry} value={person.id}>
+          delete
+        </button>
       </li>
     ));
   };
