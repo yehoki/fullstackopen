@@ -1,33 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Persons } from "./components/Persons";
 import { PersonForm } from "./components/PersonForm";
 import { Filter } from "./components/Filter";
+import personManipulate from "./services/persons";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [update, setUpdate] = useState(0);
+
+  useEffect(() => {
+    personManipulate.getPersons().then((res) => {
+      setPersons(res.data);
+    });
+  }, [update]);
 
   const addNewEntry = (event) => {
     event.preventDefault();
     if (checkDuplicateNames(newName)) {
-      const lastId = persons.slice(-1)[0].id;
+      const lastId = persons.length === 0 ? 1 : persons.slice(-1)[0].id;
       const newPerson = {
         name: newName,
         number: newNumber,
         id: lastId + 1,
       };
-      const newPersons = [...persons, newPerson];
-      setPersons(newPersons);
+      personManipulate.addPerson(newPerson).then((res) => {
+        setUpdate(update + 1);
+      });
     } else {
       alert(`${newName} already exists!`);
     }
+  };
+
+  const deleteEntry = (event) => {
+    const personFound = persons.filter((person) => person.id.toString() === event.target.value)[0];
+    personManipulate.deletePerson(personFound.id).then((res) => {
+      setUpdate(update + 1);
+    })
   };
 
   const handleNameChange = (event) => {
@@ -56,9 +67,10 @@ const App = () => {
 
   const createPersons = (personList) => {
     return personList.map((person) => (
-      <p key={person.id}>
+      <li key={person.id}>
         {person.name} {person.number}{" "}
-      </p>
+        <button onClick={deleteEntry} value={person.id}>delete</button>
+      </li>
     ));
   };
 
@@ -77,6 +89,7 @@ const App = () => {
         numberValue={newNumber}
         numberChange={handleNumberChange}
       />
+
       <h2>Numbers</h2>
       <Persons persons={displayPersons} />
     </div>
