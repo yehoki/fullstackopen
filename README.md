@@ -1,6 +1,17 @@
-# fullstackopen
+# Full Stack Open
 
 The University Of Helsinki course: [FullStackOpen](https://fullstackopen.com/)
+
+## Web Developer's Oath
+The Web Developer's Oath within the course is a list of tips to make your life, and other developers working with you much easier when learning and developing applications.
+This will increase over time, so will be continously updated
+
+**Programming is hard, that is why I will use all the possible means to make it easier**
+- I will have my browser developer console open all the time
+- I progress with small steps
+- I will write lots of `console.log` statements to make sure I understand how the code behaves and to help pinpointing problems
+- If my code does not work, I will not write more code. Instead I will start deleting the code until it works or just return to a state when everything was still working
+- When I ask for help in the course Discord or elsewhere I formulate my questions properly.
 
 ## Part 1: Introduction to React
 
