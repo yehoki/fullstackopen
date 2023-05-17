@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Persons } from "./components/Persons";
+import { PersonForm } from "./components/PersonForm";
+import { Filter } from "./components/Filter";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -10,6 +13,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchValue, setSearchValue] = useState("");
+
   const addNewEntry = (event) => {
     event.preventDefault();
     if (checkDuplicateNames(newName)) {
@@ -36,12 +40,11 @@ const App = () => {
 
   const handleSearch = (event) => {
     setSearchValue(event.target.value);
-
   };
 
   const filterPersons = persons.filter((person) =>
-  person.name.toLowerCase().includes(searchValue.toLowerCase())
-);
+    person.name.toLowerCase().includes(searchValue.toLowerCase())
+  );
 
   const checkDuplicateNames = (name) => {
     return (
@@ -59,28 +62,23 @@ const App = () => {
     ));
   };
 
-  const displayPersons = searchValue === "" ? createPersons(persons) : createPersons(filterPersons);
+  const displayPersons =
+    searchValue === "" ? createPersons(persons) : createPersons(filterPersons);
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        Filter shown with <input value= {searchValue} onChange={handleSearch} />
-      </div>
+      <Filter searchVal={searchValue} searchChange={handleSearch} />
       <h2>Add a new person</h2>
-      <form onSubmit={addNewEntry}>
-        <div>
-          Name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          Number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        onSubmit={addNewEntry}
+        nameValue={newName}
+        nameChange={handleNameChange}
+        numberValue={newNumber}
+        numberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      {displayPersons}
+      <Persons persons={displayPersons} />
     </div>
   );
 };
