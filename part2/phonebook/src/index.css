@@ -15,7 +15,8 @@ li {
   list-style-type: none;
 }
 
-.add-message {
+.add-message,
+.error-message {
   color: green;
   background-color: lightgray;
   font-size: 20px;
@@ -23,4 +24,8 @@ li {
   border-radius: 4px;
   padding: 1rem;
   margin-bottom: 1rem;
+}
+
+.error-message {
+  color: red;
 }

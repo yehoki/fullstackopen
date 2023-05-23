@@ -12,6 +12,7 @@ const App = () => {
   const [searchValue, setSearchValue] = useState("");
   const [update, setUpdate] = useState(0);
   const [addMessage, setAddMessage] = useState("");
+  const [messageClass, setMessageClass] = useState("");
 
   useEffect(() => {
     personManipulate.getPersons().then((res) => {
@@ -30,7 +31,8 @@ const App = () => {
       };
       personManipulate.addPerson(newPerson).then((res) => {
         setUpdate(update + 1);
-        setAddMessage(`${newPerson.name} added`)
+        setAddMessage(`${newPerson.name} added`);
+        setMessageClass("add-message");
         setTimeout(() => {
           setAddMessage("");
         }, 5000);
@@ -49,9 +51,18 @@ const App = () => {
           number: newNumber,
           id: currentPerson.id,
         };
-        personManipulate.editPerson(currentPerson.id, newPerson).then((res) => {
-          setUpdate(update + 1);
-        });
+        personManipulate
+          .editPerson(currentPerson.id, newPerson)
+          .then((res) => {
+            setUpdate(update + 1);
+          })
+          .catch((error) => {
+            setAddMessage(`${currentPerson.name} already deleted`);
+            setMessageClass("error-message");
+            setTimeout(() => {
+              setAddMessage("");
+            }, 5000);
+          });
       }
     }
   };
@@ -85,9 +96,23 @@ const App = () => {
     if (
       window.confirm(`Are you sure you want to delete ${personFound.name}?`)
     ) {
-      personManipulate.deletePerson(personFound.id).then((res) => {
-        setUpdate(update + 1);
-      });
+      personManipulate
+        .deletePerson(personFound.id)
+        .then((res) => {
+          setUpdate(update + 1);
+          setAddMessage(`${personFound.name} deleted`);
+          setMessageClass("error-message");
+          setTimeout(() => {
+            setAddMessage("");
+          }, 5000);
+        })
+        .catch((error) => {
+          setAddMessage(`${personFound.name} already deleted`);
+          setMessageClass("error-message");
+          setTimeout(() => {
+            setAddMessage("");
+          }, 5000);
+        });
     }
   };
 
@@ -132,7 +157,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      {addMessage === "" ? <></> : <Notification message={addMessage} />}
+      {addMessage === "" ? (
+        <></>
+      ) : (
+        <Notification message={addMessage} className={messageClass} />
+      )}
       <Filter searchVal={searchValue} searchChange={handleSearch} />
       <h2>Add a new person</h2>
       <PersonForm
