@@ -171,7 +171,6 @@ const App = () => {
         numberValue={newNumber}
         numberChange={handleNumberChange}
       />
-
       <h2>Numbers</h2>
       <Persons persons={displayPersons} />
     </div>
