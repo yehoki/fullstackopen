@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Search } from "./components/Search";
 import countryData from "./services/countries";
 import { Country } from "./components/Country";
+import { ListedCountry } from "./components/ListedCountry";
 
 function App() {
   const [allCountries, setAllCountries] = useState([]);
@@ -27,6 +28,10 @@ function App() {
         .includes(event.target.value.toLowerCase())
     );
     setSearchCountries(filteredCountries);
+  };
+
+  const changeCurrentCountry = (country) => {
+    setSearchCountries([country]);
   };
 
   const makeSearchCountries = () => {
@@ -64,7 +69,6 @@ function App() {
       const checkHiddenCountry = currentCountries.some(
         (country) => country.toLowerCase() === searchValue.toLowerCase()
       );
-      console.log(checkHiddenCountry);
       if (checkHiddenCountry) {
         const country = searchCountries.filter(
           (countryObj) =>
@@ -90,7 +94,10 @@ function App() {
         );
       }
       return searchCountries.map((country) => (
-        <p key={country.name.common}>{country.name.common}</p>
+        <ListedCountry
+          countryName={country.name.common}
+          onClick={() => changeCurrentCountry(country)}
+        />
       ));
     }
   };
