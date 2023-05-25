@@ -1,8 +1,11 @@
 import React from "react";
+import { WeatherData } from "./WeatherData";
 
 export const Country = (props) => {
   const sortLanguages = props.languages.map((language) => (
-    <li className="language" key={language}>{language}</li>
+    <li className="language" key={language}>
+      {language}
+    </li>
   ));
 
   const sortCapitals =
@@ -13,8 +16,8 @@ export const Country = (props) => {
   return (
     <div>
       <h2>{props.countryName}</h2>
-        <strong>Capital: </strong>
-        {sortCapitals}
+      <strong>Capital: </strong>
+      {sortCapitals}
       <p>
         <strong>Area: </strong>
         {props.area}
@@ -26,8 +29,9 @@ export const Country = (props) => {
       <h4>Languages</h4>
       <ul>{sortLanguages}</ul>
       <div>
-        <img className="flag" src={props.flagLink} alt={props.flagAlt}/>
+        <img className="flag" src={props.flagLink} alt={props.flagAlt} />
       </div>
+      <WeatherData capital={props.capital} />
     </div>
   );
 };

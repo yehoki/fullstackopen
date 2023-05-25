@@ -10,10 +10,13 @@ function App() {
   const [searchCountries, setSearchCountries] = useState([]);
 
   useEffect(() => {
-    countryData.getAllCountries().then((res) => {
-      const countries = res.data;
-      setAllCountries(countries);
-    });
+    countryData
+      .getAllCountries()
+      .then((res) => {
+        const countries = res.data;
+        setAllCountries(countries);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const handleFilter = (event) => {
@@ -34,6 +37,27 @@ function App() {
     setSearchCountries([country]);
   };
 
+  const makeCountryDisplay = (country) => {
+    const countryName = country.name.common;
+    const capital = country.capital;
+    const area = country.area;
+    const population = country.population;
+    const flagSVG = country.flags.svg;
+    const flagALT = country.flags.alt;
+    const languages = Object.values(searchCountries[0].languages);
+    return (
+      <Country
+        countryName={countryName}
+        capital={capital}
+        area={area}
+        languages={languages}
+        flagLink={flagSVG}
+        flagAlt={flagALT}
+        population={population}
+      />
+    );
+  };
+
   const makeSearchCountries = () => {
     if (searchCountries.length === 0) {
       return <></>;
@@ -41,24 +65,7 @@ function App() {
       return <p>Too many matches, specify another filter</p>;
     } else if (searchCountries.length === 1) {
       const country = searchCountries[0];
-      const countryName = country.name.common;
-      const capital = country.capital;
-      const area = country.area;
-      const population = country.population;
-      const flagSVG = country.flags.svg;
-      const flagALT = country.flags.alt;
-      const languages = Object.values(searchCountries[0].languages);
-      return (
-        <Country
-          countryName={countryName}
-          capital={capital}
-          area={area}
-          languages={languages}
-          flagLink={flagSVG}
-          flagAlt={flagALT}
-          population={population}
-        />
-      );
+      return makeCountryDisplay(country);
     } else {
       const currentCountries = searchCountries.map(
         (country) => country.name.common
@@ -74,27 +81,11 @@ function App() {
           (countryObj) =>
             countryObj.name.common.toLowerCase() === searchValue.toLowerCase()
         )[0];
-        const countryName = country.name.common;
-        const capital = country.capital;
-        const area = country.area;
-        const population = country.population;
-        const flagSVG = country.flags.svg;
-        const flagALT = country.flags.alt;
-        const languages = Object.values(searchCountries[0].languages);
-        return (
-          <Country
-            countryName={countryName}
-            capital={capital}
-            area={area}
-            languages={languages}
-            flagLink={flagSVG}
-            flagAlt={flagALT}
-            population={population}
-          />
-        );
+        return makeCountryDisplay(country);
       }
       return searchCountries.map((country) => (
         <ListedCountry
+          key={country.name.common}
           countryName={country.name.common}
           onClick={() => changeCurrentCountry(country)}
         />
