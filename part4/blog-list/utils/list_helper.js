@@ -9,6 +9,9 @@ const totalLikes = (blogs) => {
 
 const favouriteBlog = (blogs) => {
   // finds out which blog has the most likes
+  if (blogs.length === 0){
+    return {};
+  }
   let counter = 0;
   let returnBlog = {};
   blogs.forEach((blog) => {
@@ -23,6 +26,15 @@ const favouriteBlog = (blogs) => {
     likes: returnBlog.likes,
   };
 };
+
+const mostBlogs = (blogs) => {
+    const authors = [];
+    blogs.forEach((blog) => {
+        if(authors.includes(blog.author)){
+
+        }
+    })
+}
 
 module.exports = {
   dummy,
