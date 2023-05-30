@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "vc": "git add . && git commit -m"
+    "vc": "git add . && git commit -m",
+    "build:ui": "rm -rf build && cd ../../part2/phonebook && npm run build && cp -r build ../../part3/phonebook"
   },
   "author": "yehoki",
   "license": "ISC",

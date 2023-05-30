@@ -29,9 +29,10 @@ const unknownEndpoint = (req, res) => {
 
 const errorHandler = (err, req, res, next) => {
   console.error(err.message);
-
   if (err.name === "CastError") {
     return res.status(400).send({ error: "malformatted id" });
+  } else if (err.name === "ValidationError") {
+    return res.status(400).json({ error: err.message });
   }
   next(err);
 };
@@ -80,24 +81,25 @@ app.post("/api/persons", (req, res, next) => {
   if (data.name === undefined) {
     return res.status(400).json({ error: "Name missing" });
   }
-
   const person = new Person({
     name: data.name,
     number: data.number,
   });
-  person.save().then((savedPerson) => res.json(savedPerson));
+  person
+    .save()
+    .then((savedPerson) => res.json(savedPerson))
+    .catch((err) => next(err));
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
-  const body = req.body;
+  const { name, number } = req.body;
 
-  const person = {
-    name: body.name,
-    number: body.number,
-  };
-
-  Person.findByIdAndUpdate(req.params.id, person)
-    .then((newPerson) => res.json(newPerson))
+  Person.findByIdAndUpdate(
+    req.params.id,
+    { name, number },
+    { new: true, runValidators: true, context: "query" }
+  )
+    .then((updatePerson) => res.json(updatePerson))
     .catch((err) => next(err));
 });
 
