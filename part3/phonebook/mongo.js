@@ -2,8 +2,6 @@ require("dotenv").config()
 const mongoose = require("mongoose");
 const Person = require("./models/Person");
 
-
-
 async function getAll() {
     const people = await Person.find({});
     console.log("Phonebook:")

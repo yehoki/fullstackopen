@@ -27,14 +27,25 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      personManipulate.addPerson(newPerson).then((res) => {
-        setUpdate(update + 1);
-        setAddMessage(`${newPerson.name} added`);
-        setMessageClass("add-message");
-        setTimeout(() => {
-          setAddMessage("");
-        }, 5000);
-      });
+      personManipulate
+        .addPerson(newPerson)
+        .then((res) => {
+          setUpdate(update + 1);
+          setAddMessage(`${newPerson.name} added`);
+          setMessageClass("add-message");
+          setTimeout(() => {
+            setAddMessage("");
+          }, 5000);
+        })
+        .catch((err) => {
+            setAddMessage(
+              `Validation Error: ${newPerson.name} is shorter than the minimum allowed length (3).`
+            );
+            setMessageClass("error-message");
+            setTimeout(() => {
+              setAddMessage("");
+            }, 5000);
+        });
     } else {
       const currentPerson = persons.filter(
         (person) => person.name.toLowerCase() === newName.toLowerCase()
