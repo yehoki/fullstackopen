@@ -23,11 +23,9 @@ const App = () => {
   const addNewEntry = (event) => {
     event.preventDefault();
     if (checkDuplicateNames(newName)) {
-      const lastId = findFirstFreeId();
       const newPerson = {
         name: newName,
         number: newNumber,
-        id: lastId,
       };
       personManipulate.addPerson(newPerson).then((res) => {
         setUpdate(update + 1);
@@ -49,7 +47,6 @@ const App = () => {
         const newPerson = {
           name: currentPerson.name,
           number: newNumber,
-          id: currentPerson.id,
         };
         personManipulate
           .editPerson(currentPerson.id, newPerson)
@@ -65,28 +62,6 @@ const App = () => {
           });
       }
     }
-  };
-
-  const findFirstFreeId = () => {
-    if (persons.length === 0) {
-      return 1;
-    }
-    let highest = 0;
-    persons.forEach((person) => {
-      if (person.id > highest) {
-        highest = person.id;
-      }
-    });
-    const findArr = [];
-    for (let i = 0; i < highest; i++) {
-      findArr.push(i + 1);
-    }
-    const personsIds = persons.map((person) => person.id);
-    const lowestIdAvail =
-      persons.length === findArr.length
-        ? highest + 1
-        : Math.min(findArr.filter((person) => !personsIds.includes(person)));
-    return lowestIdAvail;
   };
 
   const deleteEntry = (event) => {
