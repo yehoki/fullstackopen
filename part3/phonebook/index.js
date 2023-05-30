@@ -23,22 +23,36 @@ app.use(
   )
 );
 
-app.get("/", (req, res) => {
-  const time = new Date();
-  let info;
-  Person.find({}).then((persons) => {
-    res.send(`
-    Phonebook has info for ${persons.length} people
-    <br/>
-    ${time}`);
-  });
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: "unkown endpoint" });
+};
+
+const errorHandler = (err, req, res, next) => {
+  console.error(err.message);
+
+  if (err.name === "CastError") {
+    return res.status(400).send({ error: "malformatted id" });
+  }
+  next(err);
+};
+
+// app.get("/", (req, res) => {
+//   const time = new Date();
+//   Person.find({}).then((persons) => {
+//     res.send(`
+//     Phonebook has info for ${persons.length} people
+//     <br/>
+//     ${time}`);
+//   });
+// });
+
+app.get("/api/persons", (req, res, next) => {
+  Person.find({})
+    .then((persons) => res.json(persons))
+    .catch((err) => next(err));
 });
 
-app.get("/api/persons", (req, res) => {
-  Person.find({}).then((persons) => res.json(persons));
-});
-
-app.get(`/api/persons/:id`, (req, res) => {
+app.get(`/api/persons/:id`, (req, res, next) => {
   const id = req.params.id;
   Person.findById(id)
     .then((person) => {
@@ -49,46 +63,19 @@ app.get(`/api/persons/:id`, (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
-      res.status(400).send({error: "Incorrect ID"})
+      next(err);
     });
-  // const findPerson = persons.find((person) => person.id === id);
-  // if (findPerson) {
-  //   res.json(findPerson);
-  // } else {
-  //   res.status(404).end();
-  // }
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  // const id = Number(req.params.id);
-  // persons = persons.filter((person) => person.id !== id);
-  // res.status(204).end();
+app.delete("/api/persons/:id", (req, res, next) => {
+  Person.findByIdAndRemove(req.params.id)
+    .then((result) => {
+      res.status(204).end();
+    })
+    .catch((err) => next(err));
 });
 
-const findFirstFreeId = () => {
-  // if (persons.length === 0) {
-  //   return 1;
-  // }
-  // let highest = 0;
-  // persons.forEach((person) => {
-  //   if (person.id > highest) {
-  //     highest = person.id;
-  //   }
-  // });
-  // const findArr = [];
-  // for (let i = 0; i < highest; i++) {
-  //   findArr.push(i + 1);
-  // }
-  // const personsIds = persons.map((person) => person.id);
-  // const lowestIdAvail =
-  //   persons.length === findArr.length
-  //     ? highest + 1
-  //     : Math.min(findArr.filter((person) => !personsIds.includes(person)));
-  // return lowestIdAvail;
-};
-
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const data = req.body;
   if (data.name === undefined) {
     return res.status(400).json({ error: "Name missing" });
@@ -98,32 +85,24 @@ app.post("/api/persons", (req, res) => {
     name: data.name,
     number: data.number,
   });
-
   person.save().then((savedPerson) => res.json(savedPerson));
-  // const person = req.body;
-  // if (!person.name) {
-  //   return res.status(400).send("The name is missing!");
-  // } else if (!person.number) {
-  //   return res.status(400).send("The number is missing");
-  // }
-  // const findNames = persons.filter(
-  //   (personName) => personName.name.toLowerCase() === person.name.toLowerCase()
-  // );
-  // if (findNames.length !== 0) {
-  //   return res
-  //     .status(400)
-  //     .send(`${person.name} already exists in the phonebook!`)
-  //     .end();
-  // }
-  // const id = findFirstFreeId();
-  // const newPerson = {
-  //   id: id,
-  //   name: person.name,
-  //   number: person.number,
-  // };
-  // persons = persons.concat(newPerson);
-  // res.json(newPerson);
 });
+
+app.put("/api/persons/:id", (req, res, next) => {
+  const body = req.body;
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  };
+
+  Person.findByIdAndUpdate(req.params.id, person)
+    .then((newPerson) => res.json(newPerson))
+    .catch((err) => next(err));
+});
+
+app.use(unknownEndpoint);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
