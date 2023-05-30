@@ -1,3 +1,4 @@
+const lo = require('lodash');
 const dummy = (blogs) => {
   return 1;
 };
@@ -9,7 +10,7 @@ const totalLikes = (blogs) => {
 
 const favouriteBlog = (blogs) => {
   // finds out which blog has the most likes
-  if (blogs.length === 0){
+  if (blogs.length === 0) {
     return {};
   }
   let counter = 0;
@@ -17,7 +18,7 @@ const favouriteBlog = (blogs) => {
   blogs.forEach((blog) => {
     if (blog.likes > counter) {
       returnBlog = blog;
-      counter = blog.likes
+      counter = blog.likes;
     }
   });
   return {
@@ -28,16 +29,35 @@ const favouriteBlog = (blogs) => {
 };
 
 const mostBlogs = (blogs) => {
-    const authors = [];
-    blogs.forEach((blog) => {
-        if(authors.includes(blog.author)){
+  if (blogs.length === 0) {
+    return {};
+  }
+  const author = lo.countBy(blogs, (blog) => blog.author);
+  const bestAuthor = lo.max(Object.keys(author), (o) => author[o]);
+  return { author: bestAuthor, blogs: author[bestAuthor] };
+};
 
-        }
-    })
-}
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return {};
+  }
+  const author = lo.groupBy(blogs, (blog) => blog.author);
+  const authors = Object.keys(author);
+  const books = Object.values(author);
+  const authorLikes = [];
+  books.forEach((book) => {
+    const bookLikes = book.reduce((sum, obj) => sum + obj.likes, 0);
+    authorLikes.push(bookLikes);
+  });
+  const maxLikes = lo.max(authorLikes);
+  const authorId = authorLikes.findIndex((num) => num === maxLikes);
+  return {author: authors[authorId], likes: maxLikes}
+};
 
 module.exports = {
   dummy,
   totalLikes,
-  favouriteBlog
+  favouriteBlog,
+  mostBlogs,
+  mostLikes,
 };

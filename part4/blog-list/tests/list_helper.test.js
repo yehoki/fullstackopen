@@ -132,7 +132,185 @@ describe('Favourite blog', () => {
   });
 
   test('Returns the first blog, with join highest number of likes', () => {
-    blog = listHelper.favouriteBlog(someBlogs);
+    const blog = listHelper.favouriteBlog(someBlogs);
     expect(blog).toEqual(bestBlog);
+  });
+});
+
+describe('Most blogs', () => {
+  const someBlogs = [
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test1',
+      author: 'TestAuthor',
+      url: 'SomeHTTPHere',
+      likes: 12,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test2',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 11,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test3',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 0,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test4',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 12,
+      __v: 0,
+    },
+  ];
+
+  const someBlogsTied = [
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test1',
+      author: 'TestAuthor',
+      url: 'SomeHTTPHere',
+      likes: 12,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test2',
+      author: 'TestAuthor',
+      url: 'SomeHTTPHere',
+      likes: 11,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test3',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 0,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test4',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 12,
+      __v: 0,
+    },
+  ];
+
+  test('Empty list returns empty object', () => {
+    expect(listHelper.mostBlogs([])).toEqual({});
+  });
+
+  test('Correct best blogger, no ties', () => {
+    const result = listHelper.mostBlogs(someBlogs);
+    expect(result).toEqual({ author: 'TestAuthor2', blogs: 3 });
+  });
+
+  test('Correct best blogger, two tied for most', () => {
+    const result = listHelper.mostBlogs(someBlogsTied);
+    expect(result).toEqual({ author: 'TestAuthor2', blogs: 2 });
+  });
+});
+
+describe('Most likes', () => {
+  const someBlogs = [
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test1',
+      author: 'TestAuthor',
+      url: 'SomeHTTPHere',
+      likes: 12,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test2',
+      author: 'TestAuthor',
+      url: 'SomeHTTPHere',
+      likes: 11,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test3',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 0,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test4',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 12,
+      __v: 0,
+    },
+  ];
+
+  const tiedLikesAuthors = [
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test1',
+      author: 'TestAuthor',
+      url: 'SomeHTTPHere',
+      likes: 12,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test2',
+      author: 'TestAuthor',
+      url: 'SomeHTTPHere',
+      likes: 11,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test3',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 11,
+      __v: 0,
+    },
+    {
+      _id: '214sarwq12s1414x1134',
+      title: 'Test4',
+      author: 'TestAuthor2',
+      url: 'SomeHTTPHere',
+      likes: 12,
+      __v: 0,
+    },
+  ];
+
+  test('Empty list returns empty object', () => {
+    expect(listHelper.mostLikes([])).toEqual({});
+  });
+
+  test('Author with most likes returned, no ties', () => {
+    const result = listHelper.mostLikes(someBlogs);
+    expect(result).toEqual({
+      author: 'TestAuthor',
+      likes: 23,
+    });
+  });
+
+  test('Author with most likes returned, tied returns correctly', () => {
+    const result = listHelper.mostLikes(tiedLikesAuthors);
+    expect(result).toEqual({
+      author: 'TestAuthor',
+      likes: 23,
+    });
   });
 });
