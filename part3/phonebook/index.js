@@ -50,7 +50,7 @@ app.get(`/api/persons/:id`, (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).end();
+      res.status(400).send({error: "Incorrect ID"})
     });
   // const findPerson = persons.find((person) => person.id === id);
   // if (findPerson) {
@@ -89,6 +89,17 @@ const findFirstFreeId = () => {
 };
 
 app.post("/api/persons", (req, res) => {
+  const data = req.body;
+  if (data.name === undefined) {
+    return res.status(400).json({ error: "Name missing" });
+  }
+
+  const person = new Person({
+    name: data.name,
+    number: data.number,
+  });
+
+  person.save().then((savedPerson) => res.json(savedPerson));
   // const person = req.body;
   // if (!person.name) {
   //   return res.status(400).send("The name is missing!");
