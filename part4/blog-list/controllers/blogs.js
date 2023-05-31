@@ -27,13 +27,13 @@ blogRouter.get('/:id', async (req, res, next) => {
 
 // postBlog
 
-blogRouter.post('/:id', async (req, res, next) => {
-  const data = req.body;
+blogRouter.post('/', async (req, res, next) => {
+  const { title, author, url, likes } = req.body;
   const blog = new Blog({
-    title: data.title,
-    author: data.author,
-    url: data.url,
-    likes: data.likes,
+    title: title,
+    author: author,
+    url: url,
+    likes: likes,
   });
   const savedBlog = await blog.save();
   res.json(savedBlog);
