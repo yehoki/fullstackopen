@@ -1,11 +1,27 @@
 const blogRouter = require('express').Router();
 const Blog = require('../models/blog');
 
+// getAll
+// blogRouter.get('/', async (req, res) => {
+//   const blogs = await Blog.find({});
+//   res.json(blogs);
+// });
+
 blogRouter.get('/', (req, res) => {
   Blog.find({}).then((blogs) => {
     res.json(blogs);
   });
 });
+
+// getOne
+// blogRouter.get('/:id', async (req, res) => {
+//   const blog = await Blog.findById(req.params.id);
+//   if (blog) {
+//     res.json(blog)
+//   } else {
+//     res.status(404).end()
+//   }
+// })
 
 blogRouter.get('/:id', (req, res, next) => {
   Blog.findById(req.params)
