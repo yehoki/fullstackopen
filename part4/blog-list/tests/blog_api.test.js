@@ -37,6 +37,30 @@ describe('When there are some initial blogs', () => {
   });
 });
 
+describe('When viewing a specific blog post', () => {
+  test('finds the blog post successfully when it exists', async () => {
+    const blogs = await api.get('/api/blogs');
+    const firstBlog = await blogs.body[0];
+    const resultBlog = await api
+      .get(`/api/blogs/${firstBlog.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+
+    expect(resultBlog.body).toEqual(firstBlog);
+  });
+
+  test('fails with code 404 when the note does not exist', async () => {
+    const id = '111111b641c906de7af8a2b6';
+    await api.get(`/api/blogs/${id}`).expect(404);
+  });
+
+  test('fails with code 400, when the id is invalid', async () => {
+    const id = '01111b641c906de7af8a2b6';
+
+    await api.get(`/api/blogs/${id}`).expect(400);
+  });
+});
+
 describe('When adding a new blog post', () => {
   const newBlog = {
     title: 'NewBlog',
