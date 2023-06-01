@@ -33,10 +33,14 @@ blogRouter.post('/', async (req, res, next) => {
     title: title,
     author: author,
     url: url,
-    likes: likes,
+    likes: likes || 0,
   });
-  const savedBlog = await blog.save();
-  res.json(savedBlog);
+  try {
+    const savedBlog = await blog.save();
+    res.status(201).json(savedBlog);
+  } catch (exc) {
+    next(exc);
+  }
 });
 
 blogRouter.delete('/:id', (req, res, next) => {
