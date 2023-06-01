@@ -15,6 +15,20 @@ const initialBlogs = [
   },
 ];
 
+const initialUsers = [
+  {
+    username: 'TestUser',
+    name: 'Test',
+    password: 'TestPassword',
+  },
+  {
+    username: 'TestUser2',
+    name: 'Test',
+    password: 'TestPassword',
+  },
+];
+
 module.exports = {
-  initialBlogs
+  initialBlogs,
+  initialUsers
 };

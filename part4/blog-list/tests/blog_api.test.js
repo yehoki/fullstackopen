@@ -1,19 +1,15 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
-mongoose.set('bufferTimeoutMS', 15000);
+mongoose.set('bufferTimeoutMS', 20000);
 const Blog = require('../models/blog');
 const api = supertest(app);
 const helper = require('./test_helper');
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog));
-  const promiseArr = blogObjects.map((blog) => {
-    blog.save();
-  });
-  await Promise.all(promiseArr);
-}, 11000);
+  await Blog.insertMany(helper.initialBlogs);
+}, 20000);
 
 describe('When there are some initial blogs', () => {
   test('Blogs are returned as JSON', async () => {
@@ -21,7 +17,7 @@ describe('When there are some initial blogs', () => {
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/);
-  }, 12000);
+  });
 
   test('All the blogs are returned', async () => {
     const blogs = await api.get('/api/blogs');
@@ -56,7 +52,6 @@ describe('When viewing a specific blog post', () => {
 
   test('fails with code 400, when the id is invalid', async () => {
     const id = '01111b641c906de7af8a2b6';
-
     await api.get(`/api/blogs/${id}`).expect(400);
   });
 });
