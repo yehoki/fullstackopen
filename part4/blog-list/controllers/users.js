@@ -4,7 +4,12 @@ const User = require('../models/user');
 
 usersRouter.get('/', async (req, res, next) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).populate('blogs', {
+      title: 1,
+      author: 1,
+      url: 1,
+      likes: 1,
+    });
     res.json(users);
   } catch (exc) {
     next(exc);
@@ -26,23 +31,9 @@ usersRouter.get('/:id', async (req, res, next) => {
 
 usersRouter.post('/', async (req, res, next) => {
   const { username, name, password } = req.body;
-  if (!username) {
-    return res.status(400).json({ error: 'The username is missing' });
-  }
   if (!password) {
     return res.status(400).json({ error: 'The password is missing' });
   }
-  const users = await User.find({});
-  const usernames = users.map((user) => user.username);
-  const checkIfUnique = usernames.filter(
-    (theUsername) => theUsername.toLowerCase() === username.toLowerCase()
-  );
-  if (checkIfUnique.length !== 0) {
-    return res
-      .status(400)
-      .json({ error: `Username ${username} is already taken` });
-  }
-
   if (password.length < 3) {
     return res.status(400).json({ error: 'The password is too short' });
   }
