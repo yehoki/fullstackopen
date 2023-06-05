@@ -34,12 +34,7 @@ blogRouter.get('/:id', async (req, res, next) => {
 
 blogRouter.post('/', async (req, res, next) => {
   const { title, author, url, likes, userId } = req.body;
-  const token = req.token;
-  const decodedToken = jwt.verify(token, process.env.SECRET);
-  if (!(decodedToken.id && token)) {
-    return res.status(401).json({ error: 'token invalid' });
-  }
-  const user = await User.findById(decodedToken.id);
+  const user = req.user;
   const blog = new Blog({
     title: title,
     author: author,
@@ -49,7 +44,6 @@ blogRouter.post('/', async (req, res, next) => {
   });
   try {
     const savedBlog = await blog.save();
-
     user.blogs = user.blogs.concat(savedBlog);
     await user.save();
     res.status(201).json(savedBlog);
@@ -59,6 +53,16 @@ blogRouter.post('/', async (req, res, next) => {
 });
 
 blogRouter.delete('/:id', async (req, res, next) => {
+  const user = req.user;
+  const blog = await Blog.findById(req.params.id);
+  const blogUserId = blog.user.toString();
+  if (blogUserId !== user.id.toString()) {
+    return res
+      .status(401)
+      .json({
+        error: 'Invalid token: You cannot delete other users blog posts',
+      });
+  }
   try {
     await Blog.findByIdAndRemove(req.params.id);
     res.status(204).end();
