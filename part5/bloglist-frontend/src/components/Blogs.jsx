@@ -10,10 +10,17 @@ export const Blogs = (props) => {
     }
     return 0;
   });
+
   return (
     <>
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} addLike={props.addLike} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          addLike={props.addLike}
+          removeBlog={props.removeBlog}
+          currentUser={props.currentUser}
+        />
       ))}
     </>
   );

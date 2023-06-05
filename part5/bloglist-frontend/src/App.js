@@ -85,10 +85,19 @@ const App = () => {
 
   const addLike = async (id, newObject) => {
     try {
-      const newBlog = await blogService.update(id, newObject);
+      await blogService.update(id, newObject);
       setUpdateDOM(updateDOM + 1);
     } catch (exc) {
       console.log(exc.response.data.error);
+    }
+  };
+
+  const removeBlog = async (id) => {
+    try {
+      await blogService.deleteBlog(id);
+      setUpdateDOM(updateDOM + 1);
+    } catch (exc) {
+      console.log(exc);
     }
   };
 
@@ -115,7 +124,12 @@ const App = () => {
           <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
             <BlogForm addBlog={handleBlogCreate} />
           </Togglable>
-          <Blogs blogs={blogs} addLike={addLike} />
+          <Blogs
+            blogs={blogs}
+            addLike={addLike}
+            removeBlog={removeBlog}
+            currentUser={user}
+          />
         </div>
       )}
     </div>

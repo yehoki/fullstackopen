@@ -23,7 +23,7 @@ export const LoginArea = (props) => {
             onChange={({ target }) => props.setPassword(target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button type="submit">Login</button>
       </form>
     </>
   );
