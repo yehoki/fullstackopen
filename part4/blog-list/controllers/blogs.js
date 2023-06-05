@@ -31,7 +31,6 @@ blogRouter.get('/:id', async (req, res, next) => {
 });
 
 // postBlog
-
 blogRouter.post('/', async (req, res, next) => {
   const { title, author, url, likes, userId } = req.body;
   const user = req.user;
@@ -73,11 +72,13 @@ blogRouter.delete('/:id', async (req, res, next) => {
 
 blogRouter.put('/:id', async (req, res, next) => {
   const { title, author, url, likes } = req.body;
+  const user = req.user;
   const blog = {
     title: title,
     author: author,
     url: url,
     likes: likes || 0,
+    user: user.id
   };
   try {
     const newBlog = await Blog.findByIdAndUpdate(req.params.id, blog, {
