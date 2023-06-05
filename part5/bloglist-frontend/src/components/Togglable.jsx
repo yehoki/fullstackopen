@@ -10,24 +10,26 @@ export const Togglable = forwardRef((props, refs) => {
     display: visible ? '' : 'none',
   };
 
+  const definedClose = props.cancel ? props.cancel : 'Cancel';
+
   const toggleVisibility = () => {
     setVisible(!visible);
   };
 
   useImperativeHandle(refs, () => {
     return {
-        toggleVisibility
-    }
-  })
+      toggleVisibility,
+    };
+  });
   return (
-    <div>
+    <>
       <div style={hideWhenVisible}>
         <button onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>Cancel</button>
+        <button onClick={toggleVisibility}>{definedClose}</button>
       </div>
-    </div>
+    </>
   );
 });

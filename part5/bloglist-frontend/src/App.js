@@ -6,6 +6,7 @@ import { LoginDisplay } from './components/LoginDisplay';
 import { Notification } from './components/Notification';
 import { BlogForm } from './components/BlogForm';
 import { Togglable } from './components/Togglable';
+import { Blogs } from './components/Blogs';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -82,6 +83,15 @@ const App = () => {
     }
   };
 
+  const addLike = async (id, newObject) => {
+    try {
+      const newBlog = await blogService.update(id, newObject);
+      setUpdateDOM(updateDOM + 1);
+    } catch (exc) {
+      console.log(exc.response.data.error);
+    }
+  };
+
   return (
     <div>
       {message === '' ? (
@@ -102,9 +112,10 @@ const App = () => {
       ) : (
         <div>
           <LoginDisplay name={user.name} onClick={handleLogout} blogs={blogs} />
-          <Togglable buttonLabel="New Blog" ref={blogFormRef}>
+          <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
             <BlogForm addBlog={handleBlogCreate} />
           </Togglable>
+          <Blogs blogs={blogs} addLike={addLike} />
         </div>
       )}
     </div>
