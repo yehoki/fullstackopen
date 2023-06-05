@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export const BlogForm = (props) => {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
+
+  const handleNewBlog = (event) => {
+    event.preventDefault();
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url,
+    };
+    props.addBlog(blogObject);
+    setTitle('');
+    setAuthor('');
+    setUrl('');
+  };
   return (
     <div>
-      <form onSubmit={props.onSubmit}>
+      <form onSubmit={handleNewBlog}>
         <h2>Create a new blog</h2>
         <div>
           <label>
             Title:{' '}
             <input
-              value={props.newTitle}
-              onChange={({ target }) => props.setTitle(target.value)}
+              value={title}
+              onChange={({ target }) => setTitle(target.value)}
               name="blogTitle"
             />
           </label>
@@ -18,8 +34,8 @@ export const BlogForm = (props) => {
           <label>
             Author:{' '}
             <input
-              value={props.newAuthor}
-              onChange={({ target }) => props.setAuthor(target.value)}
+              value={author}
+              onChange={({ target }) => setAuthor(target.value)}
               name="blogAuthor"
             />
           </label>
@@ -27,8 +43,8 @@ export const BlogForm = (props) => {
           <label>
             Url:{' '}
             <input
-              value={props.newUrl}
-              onChange={({ target }) => props.setUrl(target.value)}
+              value={url}
+              onChange={({ target }) => setUrl(target.value)}
               name="blogUrl"
             />
           </label>
