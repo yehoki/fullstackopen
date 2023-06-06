@@ -32,7 +32,6 @@ const errorHandler = (err, req, res, next) => {
 
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get('Authorization');
-  console.log('Auth', authorization)
   if (authorization && authorization.startsWith('Bearer ')) {
     req.token = authorization.replace('Bearer ', '');
   }
@@ -41,11 +40,9 @@ const tokenExtractor = (req, res, next) => {
 
 const userExtractor = async (req, res, next) => {
   const token = req.token;
-  console.log('Token', token);
   if (token) {
     const decodedToken = jwt.verify(token, process.env.SECRET);
     const user = await User.findById(decodedToken.id);
-    console.log('User ready', user);
     req.user = user;
   }
   next();

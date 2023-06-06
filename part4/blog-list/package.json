@@ -7,7 +7,10 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=production nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runINBand",
-    "vc": "git add . && git commit -m"
+    "vc": "git add . && git commit -m",
+    "build:ui": "rm -rf build && cd ../../part5/bloglist-frontend && npm run build && cp -r build ../../part4/blog-list",
+    "start:test": "cross-env NODE_ENV=test node index.js",
+    "cypress:open": "cypress open"
   },
   "author": "yehoki",
   "license": "ISC",
@@ -25,6 +28,7 @@
     "nodemon": "^2.0.22"
   },
   "devDependencies": {
+    "cypress": "^12.13.0",
     "jest": "^29.5.0",
     "supertest": "^6.3.3"
   },

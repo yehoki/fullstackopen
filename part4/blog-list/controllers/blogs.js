@@ -32,7 +32,7 @@ blogRouter.get('/:id', async (req, res, next) => {
 
 // postBlog
 blogRouter.post('/', async (req, res, next) => {
-  const { title, author, url, likes, userId } = req.body;
+  const { title, author, url, likes} = req.body;
   const user = req.user;
   const blog = new Blog({
     title: title,
