@@ -25,11 +25,11 @@ export const Togglable = forwardRef((props, refs) => {
   return (
     <>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <button id={props.id} onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>{definedClose}</button>
+        <button id={props.id} onClick={toggleVisibility}>{definedClose}</button>
       </div>
     </>
   );

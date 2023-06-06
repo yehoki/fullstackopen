@@ -4,7 +4,7 @@ import { LoginArea } from './components/LoginArea';
 import loginService from './services/login';
 import { LoginDisplay } from './components/LoginDisplay';
 import { Notification } from './components/Notification';
-import  BlogForm  from './components/BlogForm';
+import BlogForm from './components/BlogForm';
 import { Togglable } from './components/Togglable';
 import { Blogs } from './components/Blogs';
 
@@ -103,6 +103,7 @@ const App = () => {
 
   return (
     <div>
+      <h1 style={{ textAlign: 'center' }}>Blog App</h1>
       {message === '' ? (
         <></>
       ) : (
@@ -121,7 +122,7 @@ const App = () => {
       ) : (
         <div>
           <LoginDisplay name={user.name} onClick={handleLogout} blogs={blogs} />
-          <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
+          <Togglable id='new-blog-toggle' buttonLabel="Create new blog" ref={blogFormRef}>
             <BlogForm addBlog={handleBlogCreate} />
           </Togglable>
           <Blogs

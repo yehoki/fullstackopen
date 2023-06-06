@@ -5,7 +5,7 @@ export const LoginDisplay = (props) => {
     <>
       <div>
         <h2>Blogs</h2>
-        {props.name} logged in <button onClick={props.onClick}>Logout</button>
+        {props.name} logged in <button id="logout-button" onClick={props.onClick}>Logout</button>
       </div>
     </>
   );

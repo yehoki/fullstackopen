@@ -4,15 +4,11 @@ import PropTypes from 'prop-types';
 const Blog = (props) => {
   const [visible, setVisible] = useState(false);
 
-  const showWhenVisible = {
-    display: visible ? '' : 'none',
-  };
-
   const toggleVisible = () => {
     setVisible(!visible);
   };
 
-  const handleLikeButton = (event) => {
+  const handleLikeButton = () => {
     const newObject = {
       title: props.blog.title,
       author: props.blog.author,
@@ -23,7 +19,7 @@ const Blog = (props) => {
     props.addLike(props.blog.id, newObject);
   };
 
-  const handleRemoveButton = (event) => {
+  const handleRemoveButton = () => {
     if (
       window.confirm(`Remove blog ${props.blog.title} by ${props.blog.author}`)
     ) {
@@ -37,23 +33,28 @@ const Blog = (props) => {
 
   return (
     <>
-      <div className="blog">
+      <div className="blog" id={props.blog.title}>
         {props.blog.title} by {props.blog.author}
-        <button className="show-button" onClick={toggleVisible}>
+        <button
+          className={visible ? 'hide-button' : 'show-button'}
+          onClick={toggleVisible}
+        >
           {visible ? 'Hide' : 'Show'}
         </button>
         {visible ? (
           <div>
             <div>{props.blog.url}</div>
             <div>
-              Likes: {props.blog.likes}{' '}
+              {`Likes: ${props.blog.likes}`}
               <button className="like-button" onClick={handleLikeButton}>
                 Like
               </button>
             </div>
             <div>{props.blog.user.name}</div>
             {isYours() ? (
-              <button onClick={handleRemoveButton}>Remove</button>
+              <button id="remove-blog-button" onClick={handleRemoveButton}>
+                Remove
+              </button>
             ) : (
               ''
             )}
