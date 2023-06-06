@@ -19,6 +19,8 @@
   color: red;
 }
 
-
-.inputs {
+.blog {
+  padding: 10 0 0 2;
+  border: solid black 1px;
+  margin-bottom: 5px;
 }

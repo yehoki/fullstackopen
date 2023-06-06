@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 export const LoginArea = (props) => {
   return (
     <>
@@ -28,3 +28,12 @@ export const LoginArea = (props) => {
     </>
   );
 };
+
+LoginArea.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  setUsername: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+};
+

@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const Blog = (props) => {
   const [visible, setVisible] = useState(false);
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  };
   const showWhenVisible = {
     display: visible ? '' : 'none',
   };
@@ -43,25 +37,38 @@ const Blog = (props) => {
 
   return (
     <>
-      <div style={blogStyle}>
+      <div className="blog">
         {props.blog.title} by {props.blog.author}
-        <button onClick={toggleVisible}>{visible ? 'Hide' : 'Show'}</button>
-        <div style={showWhenVisible}>
-          <div>{props.blog.url}</div>
+        <button className="show-button" onClick={toggleVisible}>
+          {visible ? 'Hide' : 'Show'}
+        </button>
+        {visible ? (
           <div>
-            Likes: {props.blog.likes}{' '}
-            <button onClick={handleLikeButton}>Like</button>
+            <div>{props.blog.url}</div>
+            <div>
+              Likes: {props.blog.likes}{' '}
+              <button className="like-button" onClick={handleLikeButton}>
+                Like
+              </button>
+            </div>
+            <div>{props.blog.user.name}</div>
+            {isYours() ? (
+              <button onClick={handleRemoveButton}>Remove</button>
+            ) : (
+              ''
+            )}
           </div>
-          <div>{props.blog.user.name}</div>
-          {isYours() ? (
-            <button onClick={handleRemoveButton}>Remove</button>
-          ) : (
-            ''
-          )}
-        </div>
+        ) : (
+          ''
+        )}
       </div>
     </>
   );
+};
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
 };
 
 export default Blog;

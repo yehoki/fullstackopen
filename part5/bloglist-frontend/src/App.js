@@ -4,7 +4,7 @@ import { LoginArea } from './components/LoginArea';
 import loginService from './services/login';
 import { LoginDisplay } from './components/LoginDisplay';
 import { Notification } from './components/Notification';
-import { BlogForm } from './components/BlogForm';
+import  BlogForm  from './components/BlogForm';
 import { Togglable } from './components/Togglable';
 import { Blogs } from './components/Blogs';
 
