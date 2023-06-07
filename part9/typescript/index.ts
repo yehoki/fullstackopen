@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import express from 'express';
 import { calculateBMI } from './bmiCalculator';
 import { calculateExercises } from './exerciseCalculator';
 const PORT = 3002;
-
+const API_KEY = process.env.API_KEY;
+console.log('API KEY', API_KEY);
 const app = express();
 app.use(express.json());
 app.get('/hello', (_req, res) => {
@@ -30,6 +32,7 @@ app.get('/bmi', (req, res) => {
 });
 
 app.post('/exercises', (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { daily_exercises, target } = req.body;
   try {
     if (!daily_exercises || !target)
@@ -52,7 +55,9 @@ app.post('/exercises', (req, res) => {
       }
     }
     res.json(calculateExercises(daily_exercises, target));
-  } catch (exc) {}
+  } catch (exc) {
+    console.log(exc);
+  }
 });
 
 app.listen(PORT, () => {
