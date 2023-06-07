@@ -8,7 +8,7 @@ interface ExerciseValues {
   value2: number[];
 }
 
-export const isNotNumber = (argument: any): boolean => isNaN(Number(argument));
+export const isNotNumber = (argument: string): boolean => isNaN(Number(argument));
 
 export const parseArgumentsBmi = (args: string[]): BMIValues => {
   // BMI mode

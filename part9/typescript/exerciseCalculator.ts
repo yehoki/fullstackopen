@@ -1,4 +1,4 @@
-import { parseArgumentsExercise } from './utils/processArgs';
+// import { parseArgumentsExercise } from './utils/processArgs';
 
 interface Report {
   periodLength: number;
@@ -9,7 +9,7 @@ interface Report {
   target: number;
   average: number;
 }
-const calculateExercises = (trainingDays: number[], target: number): Report => {
+export const calculateExercises = (trainingDays: number[], target: number): Report => {
   const trainDays = trainingDays.filter((num) => num !== 0).length;
   const totalHours = trainingDays.reduce((sum, counter) => sum + counter);
   const average = totalHours / trainingDays.length;
@@ -37,13 +37,13 @@ const calculateExercises = (trainingDays: number[], target: number): Report => {
   };
 };
 
-try {
-  const { value1, value2 } = parseArgumentsExercise(process.argv);
-  console.log(calculateExercises(value2, value1));
-} catch (error: unknown) {
-  let errorMessage = 'Something went wrong...';
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.log(errorMessage);
-}
+// try {
+//   const { value1, value2 } = parseArgumentsExercise(process.argv);
+//   console.log(calculateExercises(value2, value1));
+// } catch (error: unknown) {
+//   let errorMessage = 'Something went wrong...';
+//   if (error instanceof Error) {
+//     errorMessage += ' Error: ' + error.message;
+//   }
+//   console.log(errorMessage);
+// }
