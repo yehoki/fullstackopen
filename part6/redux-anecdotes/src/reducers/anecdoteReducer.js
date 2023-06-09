@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,20 +21,21 @@ export const asObject = (anecdote) => {
 
 export const createAnecdote = (anecdote) => {
   return {
-    type: 'NEW_ANECDOTE',
+    type: 'anecdotes/addAnecdote',
     payload: asObject(anecdote),
   };
 };
 
 export const addVote = (id) => {
   return {
-    type: 'VOTE',
+    type: 'anecdotes/vote',
     payload: { id },
   };
 };
 
-export const sortByVotes = (arr) =>
-  arr.sort((first, second) => {
+export const sortByVotes = (arr) => {
+  const arrForSort = [...arr];
+  return arrForSort.sort((first, second) => {
     if (first.votes > second.votes) {
       return -1;
     } else if (first.votes < second.votes) {
@@ -40,15 +43,16 @@ export const sortByVotes = (arr) =>
     }
     return 0;
   });
+};
 
 const initialState = anecdotesAtStart.map(asObject);
 
-const reducer = (state = initialState, action) => {
-  console.log('state now: ', state);
-  console.log('action', action);
-
-  switch (action.type) {
-    case 'VOTE':
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    vote(state, action) {
+      console.log(state, action);
       const id = action.payload.id;
       const anecdoteForChange = state.find((anecdote) => anecdote.id === id);
       const changedAnecdote = {
@@ -58,22 +62,13 @@ const reducer = (state = initialState, action) => {
       return state.map((anecdote) =>
         anecdote.id !== id ? anecdote : changedAnecdote
       );
-    case 'NEW_ANECDOTE':
-      return state.concat(action.payload);
-    default:
-      return state;
-  }
-  // switch (action.type) {
-  //   case 'GOOD':
-  //     return {...state, good: state.good + 1}
-  //   case 'OK':
-  //     return {...state, ok: state.ok + 1}
-  //   case 'BAD':
-  //     return {...state, bad: state.bad + 1}
-  //   case 'ZERO':
-  //     return initialState
-  //   default: return state
-  // }
-};
+    },
+    addAnecdote(state, action) {
+      console.log(state, action);
+      state.push(action.payload);
+    },
+  },
+});
 
-export default reducer;
+export const { addAnecdote, vote } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;
