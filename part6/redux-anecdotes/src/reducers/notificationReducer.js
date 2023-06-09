@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const setNotification = (notification) => {
-  return {
-    type: 'notification/notify',
-    payload: notification,
-  };
-};
+// export const setNotification = (notification) => {
+//   return {
+//     type: 'notification/notify',
+//     payload: notification,
+//   };
+// };
 
 export const removeNotification = () => {
   return {
@@ -14,13 +14,11 @@ export const removeNotification = () => {
   };
 };
 
-
 const notificationSlice = createSlice({
   name: 'notification',
   initialState: '',
   reducers: {
     notify(state, action) {
-      console.log(state, action);
       return action.payload;
     },
     remove(state, action) {
@@ -30,5 +28,14 @@ const notificationSlice = createSlice({
 });
 
 export const { notify, remove } = notificationSlice.actions;
+
+export const setNotification = (text, seconds) => {
+  return async (dispatch) => {
+    dispatch(notify(text));
+    await setTimeout(() => {
+      dispatch(remove(text));
+    }, 1000 * seconds);
+  };
+};
 
 export default notificationSlice.reducer;
