@@ -5,6 +5,7 @@ import {
   Route,
   Link,
   useParams,
+  useNavigate,
 } from 'react-router-dom';
 
 const Menu = (props) => {
@@ -25,13 +26,27 @@ const Menu = (props) => {
           About
         </Link>
       </div>
+
       <Routes>
         <Route path="/:id" element={<Anecdote anecdotes={props.anecdotes} />} />
         <Route
           path="/"
-          element={<AnecdoteList anecdotes={props.anecdotes} />}
+          element={
+            <AnecdoteList
+              anecdotes={props.anecdotes}
+              notification={props.notification}
+            />
+          }
         />
-        <Route path="/create" element={<CreateNew addNew={props.addNew} />} />
+        <Route
+          path="/create"
+          element={
+            <CreateNew
+              setNotification={props.setNotification}
+              addNew={props.addNew}
+            />
+          }
+        />
         <Route path="/about" element={<About />} />
       </Routes>
       <Footer />
@@ -39,8 +54,9 @@ const Menu = (props) => {
   );
 };
 
-const AnecdoteList = ({ anecdotes }) => (
+const AnecdoteList = ({ anecdotes, notification }) => (
   <div>
+    {notification === '' ? null : notification}
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
@@ -105,8 +121,8 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
-
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     props.addNew({
       content,
@@ -114,6 +130,8 @@ const CreateNew = (props) => {
       info,
       votes: 0,
     });
+    navigate('/');
+    props.setNotification(`A new anecdote ${content} created!`);
   };
 
   return (
@@ -188,9 +206,22 @@ const App = () => {
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
   };
 
+  const notificationSet = async (notificationText) => {
+    setNotification(notificationText);
+    await setTimeout(() => {
+      setNotification('');
+    }, 5000);
+  };
+
+  console.log('Notification', notification, notification === '');
   return (
     <div>
-      <Menu anecdotes={anecdotes} addNew={addNew} />
+      <Menu
+        anecdotes={anecdotes}
+        addNew={addNew}
+        setNotification={notificationSet}
+        notification={notification}
+      />
     </div>
   );
 };
