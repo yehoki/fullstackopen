@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { deleteBlog, likeBlog } from '../reducers/BlogReducer';
 
 const Blog = (props) => {
   const [visible, setVisible] = useState(false);
 
-  const dispatch = useDispatch();
   const toggleVisible = () => {
     setVisible(!visible);
   };
 
   const handleLikeButton = () => {
-    dispatch(likeBlog(props.blog.id));
+    const newObject = {
+      title: props.blog.title,
+      author: props.blog.author,
+      url: props.blog.url,
+      likes: props.blog.likes,
+      user: props.blog.user.id,
+      id: props.blog.id,
+    };
+    console.log(newObject);
+    props.addLike(newObject);
   };
+
 
   const handleRemoveButton = () => {
     if (
       window.confirm(`Remove blog ${props.blog.title} by ${props.blog.author}`)
     ) {
-      dispatch(deleteBlog(props.blog.id));
+      props.removeBlog(props.blog.id);
     }
   };
 
