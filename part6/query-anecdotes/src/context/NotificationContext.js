@@ -12,6 +12,7 @@ const notificationReducer = (state, action) => {
 };
 
 const NotificationContext = createContext();
+
 export const useNotification = () => {
   const context = useContext(NotificationContext);
   return context[0];
@@ -28,6 +29,10 @@ export async function makeNotification(setNotification, text) {
     setNotification({ type: 'REMOVE' });
   }, 5000);
 }
+
+// export async function makeErrorNotification(setNotification, text) {
+// setNotification({type})
+// }
 
 export const NotificationContextProvider = (props) => {
   const [notification, notificationDispatch] = useReducer(

@@ -19,7 +19,10 @@ blogRouter.get('/', async (req, res, next) => {
 // getOne
 blogRouter.get('/:id', async (req, res, next) => {
   try {
-    const blog = await Blog.findById(req.params.id);
+    const blog = await Blog.findById(req.params.id).populate('user', {
+      name: 1,
+      username: 1,
+    });
     if (blog) {
       res.json(blog);
     } else {
@@ -32,14 +35,15 @@ blogRouter.get('/:id', async (req, res, next) => {
 
 // postBlog
 blogRouter.post('/', async (req, res, next) => {
-  const { title, author, url, likes} = req.body;
+  const { title, author, url, likes } = req.body;
   const user = req.user;
+  const userId = user._id.toString();
   const blog = new Blog({
     title: title,
     author: author,
     url: url,
     likes: likes || 0,
-    user: user.id,
+    user: userId,
   });
   try {
     const savedBlog = await blog.save();
@@ -51,16 +55,27 @@ blogRouter.post('/', async (req, res, next) => {
   }
 });
 
+blogRouter.post('/:id/comments', async (req, res, next) => {
+  const { comment } = req.body;
+  try {
+    const blog = await Blog.findById(req.params.id);
+    blog.comments = blog.comments.concat(comment);
+    await blog.save();
+    res.status(201).json(blog);
+  } catch (exc) {
+    next(exc);
+  }
+});
+
 blogRouter.delete('/:id', async (req, res, next) => {
   const user = req.user;
+  const token = req.token;
   const blog = await Blog.findById(req.params.id);
   const blogUserId = blog.user.toString();
   if (blogUserId !== user.id.toString()) {
-    return res
-      .status(401)
-      .json({
-        error: 'Invalid token: You cannot delete other users blog posts',
-      });
+    return res.status(401).json({
+      error: 'Invalid token: You cannot delete other users blog posts',
+    });
   }
   try {
     await Blog.findByIdAndRemove(req.params.id);
@@ -72,17 +87,18 @@ blogRouter.delete('/:id', async (req, res, next) => {
 
 blogRouter.put('/:id', async (req, res, next) => {
   const { title, author, url, likes } = req.body;
-  const user = req.user;
   const blog = {
     title: title,
     author: author,
     url: url,
     likes: likes || 0,
-    user: user.id
   };
   try {
     const newBlog = await Blog.findByIdAndUpdate(req.params.id, blog, {
       new: true,
+    }).populate('user', {
+      name: 1,
+      username: 1,
     });
     res.json(newBlog);
   } catch (exc) {

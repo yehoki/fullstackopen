@@ -16,8 +16,9 @@ export const Users = () => {
     return { name: user.name, blogCount: user.blogs.length, id: user.id };
   });
   const tableDisplay = userData.map((user) => {
+    const randomId = (100000 * Math.random()).toFixed(0);
     return (
-      <tr key={user.name}>
+      <tr key={randomId}>
         <td>
           <Link to={`/users/${user.id}`}>{user.name}</Link>
         </td>
