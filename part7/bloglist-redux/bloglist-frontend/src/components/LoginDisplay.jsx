@@ -11,8 +11,15 @@ export const LoginDisplay = () => {
   };
   return (
     <>
-      <div>
-        <h2>Blogs</h2>
+      <div
+        style={{
+          border: '1px solid black',
+          width: 'fit-content',
+          padding: '0.5rem',
+          borderRadius: '4px',
+          backgroundColor: 'lightgrey'
+        }}
+      >
         {user.name} logged in{' '}
         <button id="logout-button" onClick={handleLogout}>
           Logout
